@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { 
+  font-family: 'Geist', sans-serif; 
+}
+
+/* Glassmorphism and Custom Form Styles */
+.glass-border {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+}
+.glass-border:focus-within {
+  border-color: rgba(139, 92, 246, 0.4);
+  background: rgba(139, 92, 246, 0.05);
+}
+.custom-checkbox {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.custom-checkbox:checked {
+  background: rgb(139, 92, 246);
+  border-color: rgb(139, 92, 246);
+}
+.custom-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+input:focus {
+  outline: none !important;
+}
+
+/* Animation Classes */
+.animate-element {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(30px);
+  animation: fadeSlideIn 0.8s ease-out forwards;
+}
+@keyframes fadeSlideIn {
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px);
+  }
+}
+
+.animate-slide-right {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateX(-50px);
+  animation: slideRightIn 0.8s ease-out forwards;
+}
+@keyframes slideRightIn {
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateX(0px);
+  }
+}
+
+.animate-testimonial {
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(40px) scale(0.95);
+  animation: testimonialIn 0.8s ease-out forwards;
+}
+@keyframes testimonialIn {
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px) scale(1);
+  }
+}
+
+.animate-delay-100 { animation-delay: 0.1s; }
+.animate-delay-200 { animation-delay: 0.2s; }
+.animate-delay-300 { animation-delay: 0.3s; }
+.animate-delay-400 { animation-delay: 0.4s; }
+.animate-delay-500 { animation-delay: 0.5s; }
+.animate-delay-600 { animation-delay: 0.6s; }
+.animate-delay-700 { animation-delay: 0.7s; }
+.animate-delay-800 { animation-delay: 0.8s; }
+.animate-delay-900 { animation-delay: 0.9s; }
+.animate-delay-1000 { animation-delay: 1.0s; }
+.animate-delay-1100 { animation-delay: 1.1s; }
+.animate-delay-1200 { animation-delay: 1.2s; }
+.animate-delay-1300 { animation-delay: 1.3s; }
+.animate-delay-1400 { animation-delay: 1.4s; }
