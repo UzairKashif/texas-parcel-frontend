@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { AuthMap } from '../components/AuthMap';
 
 type LoginPageProps = {
   onNavigate: (page: string) => void;
@@ -91,14 +92,8 @@ export const LoginPage = ({ onNavigate }: LoginPageProps) => {
           </div>
         </section>
 
-        
-        <section className="hidden lg:block flex-1 relative">
-          <div className="animate-slide-right animate-delay-300 absolute inset-0 bg-[url(https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070&auto=format&fit=crop)] bg-cover rounded-3xl m-4"></div>
-          {/* Testimonials */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-4 px-8 w-full justify-center">
-            
-          </div>
-        </section>
+        {/* Right column: map */}
+        <AuthMap />
       </div>
     </div>
   );

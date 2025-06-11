@@ -33,7 +33,8 @@ export function App() {
         <main className="flex-grow">
           {renderPage()}
         </main>
-        <Footer />
+        {/* Conditionally render the Footer only on the home page */}
+        {page === 'home' && <Footer />}
       </div>
     </ThemeProvider>
   );
