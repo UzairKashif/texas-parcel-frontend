@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { AuthMap } from '../components/AuthMap';
+import { useAuth } from '../contexts/AuthContext';
 
 type SignUpPageProps = {
   onNavigate: (page: string) => void;
@@ -16,17 +17,42 @@ const GoogleIcon = () => (
 );
   
 export const SignUpPage = ({ onNavigate }: SignUpPageProps) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { signup } = useAuth();
+  
   const [isPasswordVisible, setPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible);
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (password !== passwordConfirm) {
+        return setError('Passwords do not match');
+    }
+
+    try {
+      setError('');
+      setLoading(true);
+      await signup(email, password);
+       // Navigation will be handled by the App component
+    } catch {
+      setError('Failed to create an account. Please try again.');
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="bg-zinc-950 text-zinc-100">
-      <div className="min-h-screen flex flex-col lg:flex-row">
+      <div className="h-[calc(100vh-64px)] flex flex-col lg:flex-row overflow-hidden">
         {/* Left column: sign-up form */}
-        <section className="flex-1 flex items-center justify-center p-8">
+        <section className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
           <div className="w-full max-w-md">
             <div className="flex flex-col gap-6">
               <h1 className="animate-element animate-delay-100 text-4xl md:text-5xl font-semibold leading-tight text-white tracking-tighter">
@@ -35,8 +61,10 @@ export const SignUpPage = ({ onNavigate }: SignUpPageProps) => {
               <p className="animate-element animate-delay-200 text-zinc-400">
                 Join our community to start finding the best land deals.
               </p>
+
+              {error && <div className="bg-red-500/20 border border-red-500 text-red-300 p-3 rounded-md text-sm">{error}</div>}
               
-              <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+              <form className="space-y-5" onSubmit={handleSubmit}>
                 <div className="animate-element animate-delay-300">
                   <label className="text-sm font-medium text-zinc-400">Full Name</label>
                   <div className="glass-border rounded-2xl mt-2">
@@ -46,13 +74,13 @@ export const SignUpPage = ({ onNavigate }: SignUpPageProps) => {
                 <div className="animate-element animate-delay-400">
                   <label className="text-sm font-medium text-zinc-400">Email Address</label>
                   <div className="glass-border rounded-2xl mt-2">
-                    <input type="email" placeholder="Enter your email address" className="w-full bg-transparent text-sm p-4 rounded-2xl" />
+                    <input type="email" placeholder="Enter your email address" value={email} onChange={e => setEmail(e.target.value)} className="w-full bg-transparent text-sm p-4 rounded-2xl" />
                   </div>
                 </div>
                 <div className="animate-element animate-delay-500">
                   <label className="text-sm font-medium text-zinc-400">Password</label>
                   <div className="glass-border rounded-2xl mt-2 relative">
-                    <input type={isPasswordVisible ? "text" : "password"} placeholder="Create a password" className="w-full bg-transparent text-sm p-4 pr-12 rounded-2xl" />
+                    <input type={isPasswordVisible ? "text" : "password"} placeholder="Create a password" value={password} onChange={e => setPassword(e.target.value)} className="w-full bg-transparent text-sm p-4 pr-12 rounded-2xl" />
                     <button type="button" onClick={togglePasswordVisibility} className="absolute inset-y-0 right-3 flex items-center">
                       {isPasswordVisible ? (
                         <EyeOff className="w-5 h-5 stroke-zinc-500 hover:stroke-zinc-300 transition-colors" />
@@ -62,8 +90,14 @@ export const SignUpPage = ({ onNavigate }: SignUpPageProps) => {
                     </button>
                   </div>
                 </div>
-                <button type="submit" className="animate-element animate-delay-600 w-full rounded-2xl bg-white py-4 font-medium text-zinc-900 hover:bg-zinc-200 transition-colors">
-                  Create Account
+                 <div className="animate-element animate-delay-500">
+                  <label className="text-sm font-medium text-zinc-400">Confirm Password</label>
+                  <div className="glass-border rounded-2xl mt-2 relative">
+                    <input type={isPasswordVisible ? "text" : "password"} placeholder="Confirm your password" value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} className="w-full bg-transparent text-sm p-4 pr-12 rounded-2xl" />
+                  </div>
+                </div>
+                <button type="submit" disabled={loading} className="animate-element animate-delay-600 w-full rounded-2xl bg-white py-4 font-medium text-zinc-900 hover:bg-zinc-200 transition-colors disabled:opacity-50">
+                  {loading ? 'Creating Account...' : 'Create Account'}
                 </button>
               </form>
 

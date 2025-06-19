@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Phone, UserCircle, Sun, Moon } from 'lucide-react';
+import { Menu, X, UserCircle, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
 type HeaderProps = {
@@ -14,6 +14,26 @@ export const Header = ({ onNavigate }: HeaderProps) => {
     onNavigate(page);
     setIsMenuOpen(false);
   };
+  
+  // A helper component for navigation links to handle smooth scrolling
+  const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+    <a 
+        href={href} 
+        onClick={(e) => {
+            if (href.startsWith('#')) {
+              e.preventDefault();
+              const targetElement = document.querySelector(href);
+              if (targetElement) {
+                  targetElement.scrollIntoView({ behavior: 'smooth' });
+              }
+            }
+            setIsMenuOpen(false);
+        }}
+        className="text-gray-700 hover:text-[#002f45] dark:text-gray-300 dark:hover:text-white font-medium transition-colors"
+    >
+      {children}
+    </a>
+  );
 
   return (
     <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-sm sticky top-0 z-50">
@@ -24,8 +44,11 @@ export const Header = ({ onNavigate }: HeaderProps) => {
 
         <nav className="hidden md:flex items-center space-x-6">
           <button onClick={() => handleNavClick('home')} className="text-gray-700 hover:text-[#002f45] dark:text-gray-300 dark:hover:text-white font-medium transition-colors">Home</button>
-          <a href="#properties" className="text-gray-700 hover:text-[#002f45] dark:text-gray-300 dark:hover:text-white font-medium transition-colors">Properties</a>
-          <a href="#services" className="text-gray-700 hover:text-[#002f45] dark:text-gray-300 dark:hover:text-white font-medium transition-colors">Services</a>
+          <NavLink href="#properties">Properties</NavLink>
+          <NavLink href="#services">Services</NavLink>
+      
+          <NavLink href="#about">About</NavLink>
+          <NavLink href="#contact">Contact</NavLink>
         </nav>
 
         <div className="hidden md:flex items-center space-x-4">
@@ -46,8 +69,10 @@ export const Header = ({ onNavigate }: HeaderProps) => {
         <div className="md:hidden bg-white dark:bg-slate-900 py-4 px-4 shadow-lg">
           <nav className="flex flex-col space-y-4">
             <button onClick={() => handleNavClick('home')} className="text-left text-gray-700 hover:text-[#002f45] dark:text-gray-300 dark:hover:text-white font-medium transition-colors">Home</button>
-            <a href="#properties" onClick={() => setIsMenuOpen(false)} className="text-gray-700 hover:text-[#002f45] dark:text-gray-300 dark:hover:text-white font-medium transition-colors">Properties</a>
-            <a href="#services" onClick={() => setIsMenuOpen(false)} className="text-gray-700 hover:text-[#002f45] dark:text-gray-300 dark:hover:text-white font-medium transition-colors">Services</a>
+             <NavLink href="#properties">Properties</NavLink>
+            <NavLink href="#services">Services</NavLink>
+            <NavLink href="#about">About</NavLink>
+            <NavLink href="#contact">Contact</NavLink>
             <hr className="border-gray-200 dark:border-gray-700"/>
             <button onClick={() => handleNavClick('login')} className="flex items-center justify-center px-4 py-2 rounded-md bg-[#002f45] text-white hover:bg-[#002f45]/90 transition-colors duration-300">
               <UserCircle size={18} className="mr-2" />
